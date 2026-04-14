@@ -49,29 +49,48 @@ const submitBtn = document.getElementById('contact-submit');
 
 contactForm.addEventListener('submit', async (e) => {
   e.preventDefault();
-  const name = document.getElementById('contact-name').value.trim();
-  const email = document.getElementById('contact-email').value.trim();
+  
+  const formData = new FormData(contactForm);
+  const name = formData.get('name').trim();
+  const email = formData.get('email').trim();
 
   if (!name || !email) {
     shakeElement(submitBtn);
     return;
   }
 
-  // Simulate send (replace with real endpoint)
+  // Visual feedback
   submitBtn.disabled = true;
+  const originalBtnText = submitBtn.querySelector('span').textContent;
   submitBtn.querySelector('span').textContent = 'שולח...';
 
-  await new Promise(r => setTimeout(r, 1200));
+  try {
+    // REPLACE 'YOUR_FORMSPREE_ID' with your actual Formspree ID
+    const response = await fetch('https://formspree.io/f/xnjlnlny', {
+      method: 'POST',
+      body: formData,
+      headers: {
+        'Accept': 'application/json'
+      }
+    });
 
-  submitBtn.querySelector('span').textContent = '✓ נשלח! אחזור אליכם בקרוב';
-  submitBtn.style.background = 'linear-gradient(135deg, #059669 0%, #10b981 100%)';
-  contactForm.reset();
-
-  setTimeout(() => {
-    submitBtn.disabled = false;
-    submitBtn.querySelector('span').textContent = 'שלחו לי את האתגר שלכם';
-    submitBtn.style.background = '';
-  }, 5000);
+    if (response.ok) {
+      submitBtn.querySelector('span').textContent = '✓ נשלח! אחזור אליכם בקרוב';
+      submitBtn.style.background = 'linear-gradient(135deg, #059669 0%, #10b981 100%)';
+      contactForm.reset();
+    } else {
+      throw new Error('Submission failed');
+    }
+  } catch (error) {
+    submitBtn.querySelector('span').textContent = 'שגיאה. נסו שוב או במייל ישיר';
+    submitBtn.style.background = 'var(--accent-red)';
+  } finally {
+    setTimeout(() => {
+      submitBtn.disabled = false;
+      submitBtn.querySelector('span').textContent = originalBtnText;
+      submitBtn.style.background = '';
+    }, 5000);
+  }
 });
 
 function shakeElement(el) {
