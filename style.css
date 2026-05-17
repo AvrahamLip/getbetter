@@ -697,23 +697,25 @@ ul { list-style: none; }
 .btn-play-now {
   font-size: 0.85rem;
   font-weight: 600;
-  color: var(--accent-cyan) !important;
+  color: var(--card-accent) !important;
   display: flex;
   align-items: center;
   gap: 6px;
-  border: 1.5px solid rgba(6, 182, 212, 0.3);
+  border: 1.5px solid var(--card-accent);
+  opacity: 0.85;
   padding: 6px 14px;
   border-radius: 8px;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  background: rgba(6, 182, 212, 0.05);
+  background: rgba(255, 255, 255, 0.02);
 }
 
 .btn-play-now:hover {
-  background: var(--accent-cyan);
-  color: #000 !important;
-  border-color: var(--accent-cyan);
+  background: var(--card-accent);
+  color: #0A0B14 !important;
+  border-color: var(--card-accent);
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(6, 182, 212, 0.3);
+  box-shadow: 0 4px 12px var(--card-glow);
+  opacity: 1;
 }
 
 .btn-play-now:active {
@@ -723,7 +725,7 @@ ul { list-style: none; }
 
 /* ══════════════════════════════════════════
    PORTFOLIO
-══════════════════════════════════════════ */
+ ══════════════════════════════════════════ */
 .portfolio { background: var(--bg-1); }
 
 .portfolio-grid {
@@ -733,8 +735,9 @@ ul { list-style: none; }
   margin-bottom: 80px;
 }
 
+/* Card theme variables and definitions */
 .portfolio-card {
-  background: rgba(255, 255, 255, 0.03);
+  background: rgba(255, 255, 255, 0.02);
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
   overflow: hidden;
@@ -742,11 +745,49 @@ ul { list-style: none; }
   display: flex;
   flex-direction: column;
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  
+  /* Fallback Card Theme */
+  --card-glow: rgba(99, 102, 241, 0.15);
+  --card-border-hover: var(--accent-1);
+  --card-accent: var(--accent-cyan);
 }
+
+#portfolio-jeruguesser {
+  --card-glow: rgba(245, 158, 11, 0.15);
+  --card-border-hover: #F59E0B;
+  --card-accent: #F59E0B;
+}
+
+#portfolio-yediat-haaretz {
+  --card-glow: rgba(6, 182, 212, 0.15);
+  --card-border-hover: #06B6D4;
+  --card-accent: #06B6D4;
+}
+
+#portfolio-pizza {
+  --card-glow: rgba(239, 68, 68, 0.15);
+  --card-border-hover: #EF4444;
+  --card-accent: #EF4444;
+}
+
+#portfolio-hebrew-reading {
+  --card-glow: rgba(16, 185, 129, 0.15);
+  --card-border-hover: #10B981;
+  --card-accent: #10B981;
+}
+
+#portfolio-streampunk {
+  --card-glow: rgba(129, 140, 248, 0.15);
+  --card-border-hover: #818CF8;
+  --card-accent: #818CF8;
+}
+
 .portfolio-card:hover {
-  border-color: var(--border-accent);
+  border-color: var(--card-border-hover);
   transform: translateY(-6px);
-  box-shadow: var(--shadow-card), var(--shadow-glow);
+  box-shadow: var(--shadow-card), 0 0 30px var(--card-glow);
 }
 
 .portfolio-card-header {
@@ -794,9 +835,22 @@ ul { list-style: none; }
   font-family: var(--font-heading);
   font-size: 1.4rem;
   font-weight: 600;
-  margin-bottom: 4px;
+  margin-bottom: 6px;
   letter-spacing: -0.01em;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
+
+.portfolio-card-body h3 .title-icon {
+  color: var(--card-accent);
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.portfolio-card:hover .portfolio-card-body h3 .title-icon {
+  transform: scale(1.15) rotate(8deg);
+}
+
 .portfolio-tagline {
   font-family: var(--font-mono);
   font-size: 0.75rem;
@@ -1249,6 +1303,8 @@ ul { list-style: none; }
   .hero-cta-group { gap: 16px; width: 100%; justify-content: center; }
   .hero-cta-group .btn { width: 100%; justify-content: center; }
 
+  .hero-scroll-hint { display: none !important; }
+
   .hero-stats { gap: 16px; justify-content: center; width: 100%; }
   .stat { flex: 1; min-width: 80px; }
   .stat-number { font-size: 1.5rem; }
@@ -1259,7 +1315,7 @@ ul { list-style: none; }
   .approach-card { padding: 32px 24px; }
   .approach-quote { padding: 32px 24px; }
 
-  .portfolio-grid { gap: 24px; }
+  .portfolio-grid { gap: 24px; grid-template-columns: 1fr; }
   .portfolio-card-header { padding: 20px 20px 0; }
   .portfolio-card-body { padding: 16px 20px 20px; }
   .portfolio-format-row { flex-direction: column; align-items: flex-start; gap: 16px; }

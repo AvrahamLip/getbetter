@@ -135,7 +135,6 @@ const activeNavStyle = document.createElement('style');
 activeNavStyle.textContent = `.nav-links a.active { color: var(--text-primary); position: relative; }
 .nav-links a.active::after { content: ''; position: absolute; bottom: -4px; right: 0; left: 0; height: 2px; background: var(--accent-1); border-radius: 1px; }`;
 document.head.appendChild(activeNavStyle);
-
 // ─── Hero CTA: subtle parallax on orbs ───
 document.addEventListener('mousemove', (e) => {
   const xRatio = (e.clientX / window.innerWidth - 0.5) * 2;
@@ -144,5 +143,21 @@ document.addEventListener('mousemove', (e) => {
   orbs.forEach((orb, i) => {
     const factor = (i + 1) * 12;
     orb.style.transform = `translate(${xRatio * factor}px, ${yRatio * factor}px)`;
+  });
+});
+
+// ─── Analytics: Track play button clicks ───
+document.querySelectorAll('.btn-play-now').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const card = btn.closest('.portfolio-card');
+    const gameName = card ? card.querySelector('h3 span').textContent.trim() : 'Unknown Game';
+    
+    if (typeof gtag === 'function') {
+      gtag('event', 'click_play_now', {
+        'game_title': gameName,
+        'event_category': 'Engagement',
+        'event_label': gameName
+      });
+    }
   });
 });
